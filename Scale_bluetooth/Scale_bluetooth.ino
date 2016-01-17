@@ -8,10 +8,7 @@ boolean stringComplete = false; //
 float weightValue;
 int ledPin10 = 10;
 int ledPin13 = 13;
-int ledPin3 = 3;
 int ledPWM; // 
-bool activatePWM = 1;
-char PWMValue;
 String HC05_Response = "";
 int bluetInByte;
 bool initZero;//
@@ -23,17 +20,10 @@ void setup()
 	Serial.begin(57600); //
 	bluetooth.begin(9600); //
 	comValue.begin(9600); // 
-	bluetooth.setTimeout(10);
-
-
 	inputString.reserve(200); //
 
 	pinMode(ledPin10, OUTPUT);
 	pinMode(ledPin13, OUTPUT);
-	pinMode(ledPin3, OUTPUT);
-	
-
-
 }
 void comValueEvent()
 {
@@ -97,53 +87,27 @@ void blueChange()
 {
 	char weightChar[6];
 	dtostrf(weightValue, 2, 2, weightChar);
-	bluetooth.flush();
 	bluetooth.println(weightChar);
-	//bluetooth.print("\t\t");
-	//bluetooth.setTimeout(2);
-	delay(1000);
+	delay(500);
 
 }
 
-void testPWM()
-{
-	if (!initZero) 
-	{
-		if (bluetooth.available())
-		{
-			
-			PWMValue = 3;
-			/*bluetooth.print("I'm ready!");
-
-			PWMValue = bluetooth.read();
-			
-			analogWrite(ledPin3, PWMValue);*/
-		}
-	}
-	
-}
 
 
 void loop()
 {
-
-	
 	comValueEvent();
 	if (stringComplete)  
 	{
-
-			
 
 		inputString.remove(0, 8); 
 		weightValue = inputString.toFloat();
 
 		//Serial.println(weightValue);
 
-		initiateZero();
+		//initiateZero();
 
-		testPWM();
-
-		//blueChange();
+		blueChange();
 
 		inputString = "";
 		stringComplete = false;
