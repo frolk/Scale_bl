@@ -1,26 +1,26 @@
 ﻿#include <SoftwareSerial\SoftwareSerial.h>
 
-SoftwareSerial comValue(8, 9); // ��������� ���� ��� ������������ �����
-SoftwareSerial bluetooth(6, 7);// RX TX �� �������, TX RX �� b//���������� ��������� SoftSerial
+SoftwareSerial comValue(8, 9); // 
+SoftwareSerial bluetooth(6, 7);// 
 
-String inputString = "";  //������� ��������� ������ String ��� �������� 
-boolean stringComplete = false; //������� ���� ����� ������
+String inputString = "";  // 
+boolean stringComplete = false; //
 float weightValue;
 int ledPin10 = 10;
 int ledPin13 = 13;
-int ledPWM; // �������� � ������
+int ledPWM; // 
 String HC05_Response = "";
 int bluetInByte;
-bool initZero;//���������� ����������
+bool initZero;//
 
 void setup()
 {
 
 
-	Serial.begin(57600); //���������� �������� ��� ����� � �������
-	bluetooth.begin(9600); //�������� �������
-	comValue.begin(9600); // ���������� �������� ��� ����� � �������
-	inputString.reserve(200); //����������� ������ � 100 ���� ��� ������� ������
+	Serial.begin(57600); //
+	bluetooth.begin(9600); //
+	comValue.begin(9600); // 
+	inputString.reserve(200); //
 
 	pinMode(ledPin10, OUTPUT);
 	pinMode(ledPin13, OUTPUT);
@@ -29,10 +29,10 @@ void comValueEvent()
 {
 
 	while (comValue.available())
-		//�������� ����� ����
+		//
 	{
 		char inChar = comValue.read();
-		//��������� ���� ���� � ���� ������
+		//
 		inputString += inChar;
 
 		if (inChar == '\n')
@@ -46,7 +46,7 @@ void comValueEvent()
 void initiateZero()
 
 {
-	if (weightValue < 2)  // ��������� ��������� �� ����
+	if (weightValue < 2)  //
 
 	{
 		initZero = true;
@@ -57,7 +57,7 @@ void initiateZero()
 		initZero = false;
 	}
 
-	if (!initZero) // ���� ��������� �� ����
+	if (!initZero) //
 
 	{
 
@@ -97,13 +97,13 @@ void blueChange()
 void loop()
 {
 	comValueEvent();
-	if (stringComplete)  //���� ���� true (������ ������ ������ ������)
+	if (stringComplete)  
 	{
 
-		inputString.remove(0, 8); //������� ��� ��� �� �������
+		inputString.remove(0, 8); 
 		weightValue = inputString.toFloat();
 
-		//Serial.println(weightValue);//������� �� �����
+		//Serial.println(weightValue);
 
 		//initiateZero();
 
