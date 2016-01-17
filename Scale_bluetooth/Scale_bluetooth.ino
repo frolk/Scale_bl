@@ -1,6 +1,6 @@
 ﻿#include <SoftwareSerial\SoftwareSerial.h>
 
-SoftwareSerial comValue(8, 9); // 
+SoftwareSerial comValue(8, 9); // определение портов
 SoftwareSerial bluetooth(6, 7);// 
 
 String inputString = "";  // 
