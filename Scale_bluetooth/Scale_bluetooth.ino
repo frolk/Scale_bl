@@ -1,7 +1,7 @@
 ﻿#include <SoftwareSerial\SoftwareSerial.h>
 
 SoftwareSerial comValue(8, 9); // определение портов
-SoftwareSerial bluetooth(6, 7);// 
+SoftwareSerial bluetooth(6, 7);// bluetooth's uart pins
 
 String inputString = "";  // 
 boolean stringComplete = false; //
