@@ -1,15 +1,125 @@
-/*
- Name:		Scale_bluetooth.ino
- Created:	1/17/2016 2:55:41 PM
- Author:	Stas
-*/
+﻿#include <SoftwareSerial\SoftwareSerial.h>
 
-// the setup function runs once when you press reset or power the board
-void setup() {
+SoftwareSerial comValue(8, 9); // ��������� ���� ��� ������������ �����
+SoftwareSerial bluetooth(6, 7);// RX TX �� �������, TX RX �� b//���������� ��������� SoftSerial
+
+String inputString = "";  //������� ��������� ������ String ��� �������� 
+boolean stringComplete = false; //������� ���� ����� ������
+float weightValue;
+int ledPin10 = 10;
+int ledPin13 = 13;
+int ledPWM; // �������� � ������
+String HC05_Response = "";
+int bluetInByte;
+bool initZero;//���������� ����������
+
+void setup()
+{
+
+
+	Serial.begin(57600); //���������� �������� ��� ����� � �������
+	bluetooth.begin(9600); //�������� �������
+	comValue.begin(9600); // ���������� �������� ��� ����� � �������
+	inputString.reserve(200); //����������� ������ � 100 ���� ��� ������� ������
+
+	pinMode(ledPin10, OUTPUT);
+	pinMode(ledPin13, OUTPUT);
+}
+void comValueEvent()
+{
+
+	while (comValue.available())
+		//�������� ����� ����
+	{
+		char inChar = comValue.read();
+		//��������� ���� ���� � ���� ������
+		inputString += inChar;
+
+		if (inChar == '\n')
+		{
+			stringComplete = true;
+		}
+	}
 
 }
 
-// the loop function runs over and over again until power down or reset
-void loop() {
-  
+void initiateZero()
+
+{
+	if (weightValue < 2)  // ��������� ��������� �� ����
+
+	{
+		initZero = true;
+	}
+
+	else
+	{
+		initZero = false;
+	}
+
+	if (!initZero) // ���� ��������� �� ����
+
+	{
+
+		digitalWrite(ledPin13, HIGH);
+
+	}
+
+	else
+	{
+		digitalWrite(ledPin13, LOW);
+	}
+
+
 }
+
+void pwmLed()
+{
+
+
+	ledPWM = map(weightValue, 0, 150, 0, 255);
+
+	analogWrite(ledPin10, ledPWM);
+
+}
+
+void blueChange()
+{
+	char weightChar[6];
+	dtostrf(weightValue, 2, 2, weightChar);
+	bluetooth.println(weightChar);
+	delay(500);
+
+}
+
+
+
+void loop()
+{
+	comValueEvent();
+	if (stringComplete)  //���� ���� true (������ ������ ������ ������)
+	{
+
+		inputString.remove(0, 8); //������� ��� ��� �� �������
+		weightValue = inputString.toFloat();
+
+		//Serial.println(weightValue);//������� �� �����
+
+		//initiateZero();
+
+		blueChange();
+
+		inputString = "";
+		stringComplete = false;
+		//delay(2000);
+
+	}
+}
+
+
+
+
+
+
+
+
