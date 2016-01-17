@@ -8,7 +8,9 @@ boolean stringComplete = false; //
 float weightValue;
 int ledPin10 = 10;
 int ledPin13 = 13;
+int ledPin3 = 3;
 int ledPWM; // 
+int PWMValue = 50;
 String HC05_Response = "";
 int bluetInByte;
 bool initZero;//
@@ -24,6 +26,7 @@ void setup()
 
 	pinMode(ledPin10, OUTPUT);
 	pinMode(ledPin13, OUTPUT);
+	pinMode(ledPin3, OUTPUT);
 }
 void comValueEvent()
 {
@@ -87,18 +90,29 @@ void blueChange()
 {
 	char weightChar[6];
 	dtostrf(weightValue, 2, 2, weightChar);
+	bluetooth.flush();
 	bluetooth.println(weightChar);
-	delay(500);
+	//bluetooth.print("\t\t");
+	//bluetooth.setTimeout(2);
+	delay(1000);
 
 }
 
+void testPWM()
+{
+	analogWrite(ledPin3, PWMValue);
+}
 
 
 void loop()
 {
+
+	testPWM();
 	comValueEvent();
 	if (stringComplete)  
 	{
+
+			
 
 		inputString.remove(0, 8); 
 		weightValue = inputString.toFloat();
