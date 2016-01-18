@@ -1,26 +1,26 @@
 ﻿#include <SoftwareSerial\SoftwareSerial.h>
 
-SoftwareSerial comValue(8, 9); // определение портов
-SoftwareSerial bluetooth(6, 7);// bluetooth's uart pins
+SoftwareSerial comValue(8, 9); //  pins for scale
+SoftwareSerial bluetooth(6, 7);// pins for bluetooth
 
-String inputString = "";  // 
-boolean stringComplete = false; //
-float weightValue;
+String inputString = "";  // data from scale
+boolean stringComplete = false; // flag of endging of message from scale
+float weightValue; 
 int ledPin10 = 10;
 int ledPin13 = 13;
-int ledPWM; // 
+int ledPWM; 
 String HC05_Response = "";
 int bluetInByte;
-bool initZero;//
+bool initZero;
 
 void setup()
 {
 
 
-	Serial.begin(57600); //
-	bluetooth.begin(9600); //
-	comValue.begin(9600); // 
-	inputString.reserve(200); //
+	Serial.begin(57600); // assign computer's baudrate
+	bluetooth.begin(9600); // bluetooth hc-05's baudrate
+	comValue.begin(9600); // arduino's baudrate
+	inputString.reserve(200); //reserve space for scale's data
 
 	pinMode(ledPin10, OUTPUT);
 	pinMode(ledPin13, OUTPUT);
@@ -28,20 +28,21 @@ void setup()
 void comValueEvent()
 {
 
-	while (comValue.available())
+	while (comValue.available()) 
 		//
 	{
-		char inChar = comValue.read();
-		//
-		inputString += inChar;
+		char inChar = comValue.read(); // reading scale's message (18 byte on GS7516). Every byte rewrite inchar variable
+		
+		inputString += inChar;  //assemble String of inChars
 
-		if (inChar == '\n')
+		if (inChar == '\n') //detect byte with symbol of ending
 		{
-			stringComplete = true;
+			stringComplete = true;  // activate flag's string ending
 		}
 	}
 
 }
+// getting scale's message
 
 void initiateZero()
 
@@ -73,6 +74,7 @@ void initiateZero()
 
 }
 
+
 void pwmLed()
 {
 
@@ -82,6 +84,7 @@ void pwmLed()
 	analogWrite(ledPin10, ledPWM);
 
 }
+
 
 void blueChange()
 {
